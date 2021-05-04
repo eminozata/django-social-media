@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}
+tüm profiller
+{% endblock title %}
+
+{% block content %}
+
+    {% if is_empty %}
+        <h1>No profiles to interact with</h1>
+    {% endif %}
+
+    {% for obj in object_list %}
+
+        <div class="ui special cards">
+            <div class="card">
+                <div class="blurring dimmable image">
+                <div class="ui dimmer">
+                    <div class="content">
+                    <div class="center">
+                        <div class="ui button">
+                        
+                            {% if obj.user not in rel_receiver and obj.user not in rel_sender %}
+                                <form action="{% url 'profiles:send-invite' %}" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="profile_pk" value={{obj.pk}}>
+                                    <button type="submit" class="ui positive basic button mb-5 w-big"><i class="plus square icon"></i>Ekle</button>
+                                </form>
+                            {% endif %}
+
+                            {% if obj.user in rel_receiver and request.user not in obj.friends.all %}
+                                <button class="ui  orange disabled button mb-5 w-big"><i class="user icon"></i>Onay Bekliyor</button>
+                            {% endif %}
+
+                            {% if request.user in obj.friends.all %}
+                            <form action="{% url 'profiles:remove-friend' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="profile_pk" value={{obj.pk}}>
+                                <button type="submit" class="ui negative basic button mb-5 w-big"><i class="minus square icon"></i>Çıkar</button>
+                            </form>
+                            {% endif %}
+
+
+                        
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <img src={{obj.avatar.url}}>
+                </div>
+                <div class="content">
+                <a href={{obj.get_absolute_url}} class="header">{{obj.user}}</a>
+                <div class="meta">
+                    <span class="date">{{obj.created|date:"d M Y"}}'da katıldı</span>
+                </div>
+                </div>
+                <div class="extra content">
+                <a>
+                    <i class="users icon"></i>
+                    {{obj.get_friends_no}} Arkadaş
+                </a>
+                </div>
+            </div>
+        </div>
+
+
+    {% endfor %}
+{% endblock content %}

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}
+istekler
+{% endblock title %}
+
+{% block content %}
+
+    {%if is_empty%}
+        <h2>Gelen istek yok :(</h2>
+    {%endif%}
+
+    {%for obj in qs%}
+
+        <div class="ui special cards">
+            <div class="card">
+                <div class="blurring dimmable image">
+                <div class="ui dimmer">
+                    <div class="content">
+                    <div class="center">
+                                                            <form action="{% url 'profiles:accept-invite' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="profile_pk" value={{obj.pk}}>
+                            <button type="submit" class="ui positive basic button w-big mb-5"><i class="check icon"></i>Onayla</button>
+                        </form>
+                        <form action="{% url 'profiles:reject-invite' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="profile_pk" value={{obj.pk}}>
+                            <button type="submit" class="ui negative basic button w-big mb-5"><i class="close icon"></i>
+                                Sil
+                            </button>
+                        </form>
+                    </div>
+                    </div>
+                </div>
+                <img src={{obj.avatar.url}}>
+                </div>
+                <div class="content">
+                <a href={{obj.get_absolute_url}} class="header">{{obj.user}}</a>
+                <div class="meta">
+                    <span class="date">{{obj.created|date:"d M Y"}}'da katıldı</span>
+                </div>
+                </div>
+                <div class="extra content">
+                <a>
+                    <i class="users icon"></i>
+                    {{obj.get_friends_no}} Arkadaş
+                </a>
+                </div>
+
+            </div>
+        </div>
+    {%endfor%}
+
+
+{% endblock content %}

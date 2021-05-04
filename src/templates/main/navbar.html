@@ -1,0 +1,26 @@
+<div class="ui inverted menu nav mb-7">
+  <div class="ui container">
+    <a href="{% url 'posts:main-post-view'%}" class="item">
+        <h3>mamitter</h3>
+    </a>
+
+
+    <div class="right menu">
+        {% if request.user.is_authenticated %}
+
+            <a href="{% url 'profiles:my-profile-view'%}" class="item">
+                <img src = {{picture.url}} class="ui avatar image">&nbsp;
+                 {{ request.user }}
+            </a>
+
+            <a href="{%url 'account_logout'%}" class="ui item">
+                Çıkış Yap
+            </a>
+        {% else %}
+        <a href="{%url 'account_login'%}" class="ui item">
+                Giriş Yap
+            </a>
+        {% endif %}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}delete{% endblock title %}
+
+{% block content %}
+
+    {%if messages %}
+        {% for message in messages%}
+            {% if 'warning' in message.tags %}
+                <div class="ui negative message">
+                    <div class="header">
+                        {{message}}
+                    </div>
+                </div>
+            {%endif%}
+        {%endfor%}
+    
+    {% else %}
+        <div class="ui segment">
+            <h3>Gönderiyi Sil</h3>
+            <form action="" method="POST">
+                {%csrf_token%}
+                <p>Silmek istediğine emin misin?</p>
+                <button class="negative ui button" type="submit">Sil</button>
+            </form>
+        </div>
+
+    {%endif%}
+
+
+{% endblock content %}

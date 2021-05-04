@@ -1,0 +1,71 @@
+body {
+    background-color: #e9dfdd!important;
+    font-family: 'Cabin', sans-serif !important;
+
+}
+
+
+.nav{
+    border-radius: 0px !important;
+    padding: 10px 0 10px 0 !important;
+    background-color: #2565b9 !important; 
+    font-family: 'PT Sans', sans-serif !important;
+
+}
+
+.mb-7{
+    margin-bottom: 7px !important;
+}
+
+.mymodal {
+    height: 300px !important;
+    top: 200px !important;
+    font-size: 20px !important;
+}
+.myupdatebtn{
+    margin-top: 20px !important;
+    margin-left: 70px !important;
+}
+.mypostbutton{
+    margin: 0px 125px !important;
+}
+.mb-5{
+    margin-bottom: 5px !important;
+}
+.w-big{
+    width: 200px !important;
+}
+
+.bwhite-lg{
+    background-color: transparent !important;
+}
+.bwhite-sm{
+    background-color: transparent !important;
+    width: 10px !important;
+}
+.comment-box{
+    display: none ;
+}
+.post-file-input{
+    border: 0  !important;
+    clip: rect(0, 0, 0, 0) !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    position: absolute  !important;
+    white-space: nowrap !important;
+    width: 1px !important;
+}
+
+
+.btn-right{
+    margin-left: 112px !important;
+}
+
+.post-color{
+    background-color: rgba(223, 183, 76, 0.795) !important;
+}
+.mycenter{
+    text-align: center !important;
+}
+

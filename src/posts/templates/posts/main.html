@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+
+{% block title %}main page{% endblock title %}
+
+{% block content %}
+
+
+<div class="ui grid">
+
+
+    <div class="three wide column">
+
+        <div class="ui vertical menu">
+        <a href="{% url 'posts:main-post-view'%}" class="item">
+            Anasayfa
+        </a>
+        <div class="ui left pointing dropdown link item">
+            <i class="dropdown icon"></i>
+            
+            Bildirimler
+           
+            {% if invites_num > 0  %}
+            <i class="bell icon red"></i>
+            {% else %}
+            <i class="bell icon "></i>
+
+            {% endif %}
+            <div class="menu">
+                <a href= "{% url 'profiles:my-invites-view'%}" class="item">
+                    Gelen İstekler &nbsp; <div class= "ui purple horizontal label">{{invites_num}}</div>
+                    
+
+                </a>
+            </div>
+        </div>
+        <a href="{% url 'profiles:my-profile-view'%}" class="item">
+            Profilim
+        </a>
+        <a href="{% url 'profiles:all-profiles-view'%}" class="item">
+            Tüm Profiller
+        </a>
+        </div>
+
+    </div>
+
+
+    <div class="nine wide column">
+     <div class="ui fluid card post-color"> 
+            <div class="extra content">
+                {% if post_added %}
+                <div class="ui green message">Gönderildi!</div>
+                {% endif %}          
+                <form action="" method="POST" class='ui form ' enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{p_form.as_p}}       
+                        <button type="submit" name="submit_p_form" class="ui right floated button mt-5 w-full">Gönder</button>
+                </form>
+            </div>
+        </div>
+    
+    {% if arkadas_post %}
+        {% for obj in arkadas_post %}
+
+
+        
+
+        <div class="ui fluid card">
+            <div class="content">
+                <div class="right floated meta">
+                <div class="ui grid">
+                    <div class="row">
+                        {% ifequal request.user obj.author.user %}
+                        <div class="ui orange icon pointing dropdown button">
+                         <i class="angle down icon"></i>
+                          <div class="menu">
+                          <div class="item"><a href="{%url 'posts:post-update' obj.pk%}"><button class="ui green button">Update</button></a></div>
+                              <div class="ui divider"></div>
+                          <div class="item"><a href="{%url 'posts:post-delete' obj.pk%}"><button class="ui red button">Delete</button></a></div>
+                            
+                            </div>
+                            </div>
+                        {% endifequal %}
+                    </div>
+                </div>
+                    
+                </div>
+                <img class="ui avatar image" src={{obj.author.avatar.url}}> 
+                {{ obj.author.first_name }} <a href="{% url 'profiles:profile-detail-view' obj.author.slug%}">@{{obj.author}}</a>
+            </div>
+            <div class="ui fluid image">
+                {% if obj.image %}
+                    <img src={{obj.image.url}}>
+                {% endif %}
+            </div>
+            <div class="content">
+                  <div class="metadata">
+            <span class="date right floated">{{ obj.created|timesince}} önce</span>
+            </div>
+                    <h4 class="ui block header"> {{ obj.content }} </h4>
+                <div class="right floated">
+                    <form action={% url 'posts:like-post-view'%} method = "POST">
+                        {% csrf_token %}
+                        <input type="hidden" name = "post_id" value={{obj.id}}>
+                        <div class="ui labeled button" tabindex="0">                        
+                        {% if profile not in obj.liked.all %}
+                            <button type = "submit" class="ui small red button">
+                                <i class="heart icon"></i>
+                             </button>
+                
+                            <a class="ui basic  left pointing label">
+                                {{obj.liked.all.count}}
+                            </a>                       
+                
+                        {% else %}
+                            <button type="submit" class="ui small gray button">
+                                <i class="heart outline icon"></i> 
+                            </button>
+                            <a class="ui basic  red left pointing label">
+                                {{obj.liked.all.count}}
+                            </a> 
+                           
+                        {% endif %}
+                        
+                        </div>
+                    </form>
+                </div>
+                <i class="comment icon"></i>
+                <span> {{ obj.num_comments }} comments</span>
+            </div>
+            <div class="extra content">
+                <div class="mb-5">         
+                </div>
+                {% if obj.num_comments >= 1 %}
+                <button class="cmt_btn ui button mb-5 SeeMore2">daha fazla göster</button>
+                <div class="comment-box">
+                {% if obj.comment_set.all %}
+                    {% for c in obj.comment_set.all %}
+                    <div class="ui comments">
+                        <div class="comment">
+                            <a class="avatar">
+                            <img src={{c.user.avatar.url}}>
+                            </a>
+                            <div class="content">
+                            <a class="author">{{c.user}}</a>
+                            <div class="metadata">
+                                <span class="date">{{c.created}}</span>
+                            </div>
+                            <div class="text">
+                                {{c.body}}
+                            </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {% endfor %}
+                {% endif %}
+                </div>
+                {% endif %}
+
+
+  
+                <form action="" method="POST"class='ui fluid form'>
+                    {% csrf_token %}
+                    <input type="hidden" name="post_id" value={{obj.id}}>
+                    {{ c_form.as_p }}
+                    <button type="submit" name="submit_c_form" class="ui right floated button mt-5 w-full">Yorum Yap</button>
+                </form>
+            </div>
+            </div>
+        
+
+
+
+
+        {% endfor %}
+        {% else %}
+            <div class="ui segment">
+                <h2 class="ui center aligned icon header">
+                    <i class="paw icon brown"></i>
+                    buralarda pek bir şey yok<br>
+                    arkadaş ekleyebilir veya bir şeyler paylaşabilirsin.
+                    </h2>
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+     
+ 
+
+
+
+
+
+
+</div>
+{% endblock content %}
+
+{% block scripts %} 
+    <script>
+        $( document ).ready(function() {
+            let display = false
+            $(".cmt_btn").click(function () {
+                if (display===false) {
+                    $(this).next(".comment-box").show("slow");
+                    display=true
+                } else {
+                    $(this).next(".comment-box").hide("slow");
+                    display=false
+                }  
+            });
+        });
+
+        $('.ui.sticky')
+        .sticky({
+            context: '#example2',
+            pushing: true
+        })
+        ;
+    </script>
+{% endblock scripts %}
