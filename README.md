@@ -1,3 +1,3 @@
 # django-social-media
 
-http://eminozataa.pythonanywhere.com/
+http://ozataemin.pythonanywhere.com/
